@@ -1,4 +1,3 @@
-/* resseting css */
 @layer reset {
 
     *,
@@ -74,11 +73,8 @@
     }
 }
 
-/* end of resseting css */
-
 @layer base {
     :root {
-        /* colors */
         --clr-white: hsl(0, 0%, 100%);
         --clr-gray-100: hsl(0, 2%, 79%);
         --clr-brand-400: hsl(25, 88%, 75%);
@@ -96,7 +92,6 @@
         --clr-red-500: hsl(359, 34%, 24%);
         --clr-teal-500: hsl(186, 42%, 25%);
 
-        /* font */
         --ff-heading: "Outfit", sans-serif;
         --ff-body: "Fira Sans", sans-serif;
 
@@ -109,7 +104,6 @@
         --fs-900: 3.75rem;
         --fs-1000: 3.75rem;
 
-        /*on small screens*/
         @media (width > 760px) {
             --fs-300: 0.875rem;
             --fs-400: 1rem;
@@ -122,8 +116,8 @@
         }
     }
 
+    /* in another selector for syntax highlighting reasons only */
     :root {
-        /* primitives here */
         --text-main: var(--clr-gray-100);
         --text-high-contrast: var(--clr-white);
         --text-brand: var(--clr-brand-500);
@@ -152,15 +146,12 @@
         --border-radius-1: 0.25rem;
         --border-radius-2: 0.5rem;
         --border-radius-3: 0.75rem;
-
     }
+}
 
-    html {
-        font-family: var(--ff-body);
-        line-height: 1.6;
-    }
-
+@layer base {
     body {
+        font-family: var(--ff-body);
         font-size: var(--font-size-regular);
         color: var(--text-main);
         background-color: var(--background-main);
@@ -171,11 +162,8 @@
     h3,
     h4 {
         font-family: var(--ff-heading);
+        font-weight: 700;
         color: var(--text-high-contrast);
-    }
-
-    h1 {
-        font-size: var(--font-size-heading-lg);
     }
 
     a {
@@ -186,11 +174,245 @@
     a:focus-visible {
         color: var(--text-brand-light);
     }
+
+    img {
+        border-radius: var(--border-radius-3);
+    }
+}
+
+@layer layout {
+    .flow>*+* {
+        margin-block-start: var(--flow-space, 1em);
+    }
+
+    .grid-flow {
+        display: grid;
+        gap: var(--grid-flow-space, 1rem);
+
+        align-content: start;
+        justify-items: start;
+    }
+
+    .wrapper {
+        --wrapper-max-width: 1130px;
+        --wrapper-padding: 1rem;
+
+        max-width: var(--wrapper-max-width);
+        margin-inline: auto;
+        padding-inline: var(--wrapper-padding);
+
+        /* helps to match the Figma file */
+        box-sizing: content-box;
+    }
+
+    .wrapper[data-width="narrow"] {
+        --wrapper-max-width: 720px;
+    }
+
+    .wrapper[data-width="wide"] {
+        --wrapper-max-width: 1330px;
+    }
+
+    .section {
+        padding-block: 3.75rem;
+
+        @media (min-width: 760px) {
+            padding-block: 8rem;
+
+            &[data-padding="compact"] {
+                padding-block: 4.5rem;
+            }
+        }
+    }
+
+    .equal-columns {
+        display: grid;
+        gap: var(--equal-columns-gap, 1rem);
+        align-items: var(--column-layout-alignment, start);
+
+        &[data-gap="large"] {
+            gap: 2rem;
+        }
+
+        &[data-vertical-alignment="centered"] {
+            --column-layout-alignment: center;
+        }
+
+        &[data-vertical-alignment="bottom"] {
+            --column-layout-alignment: end;
+        }
+
+        @media (width > 760px) {
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+        }
+    }
+}
+
+@layer components {
+    .site-header {
+        padding-block: 1rem;
+    }
+
+    .site-header__inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 2rem;
+        justify-content: space-between;
+    }
+
+    .primary-navigation {
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 2rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    .site-footer {
+        background-color: var(--background-dark);
+        padding-block: 2rem;
+        text-align: center;
+
+        /* either use .grid-flow and change the --grid-flow-spacing, or do this */
+        display: grid;
+        gap: 2rem;
+
+        a {
+            text-decoration: none;
+            color: var(--text-main);
+
+            &:hover,
+            &:focus-visible {
+                color: var(--text-brand-light);
+            }
+        }
+    }
+
+    .site-footer__title {
+        font-size: var(--font-size-md);
+        font-family: var(--ff-heading);
+        font-weight: 700;
+    }
+
+    .hero {
+        text-align: center;
+        background-image: url(/assets/hero.webp);
+        background-size: cover;
+        font-size: var(--font-size-md);
+        color: var(--text-high-contrast);
+    }
+
+    .hero__title {
+        font-size: var(--font-size-heading-lg);
+
+        >span {
+            display: block;
+            font-size: var(--font-size-heading-xl);
+            color: var(--text-brand);
+        }
+    }
+
+    .card {
+        display: grid;
+        gap: var(--card-gap, 1rem);
+        padding: 1rem;
+        background-color: var(--background-light);
+        border-radius: var(--border-radius-3);
+
+        img {
+            border-radius: var(--border-radius-2);
+        }
+    }
+
+    .card__title {
+        color: var(--card-title-color, var(--text-brand));
+        font-size: var(--card-title-font-size, var(--font-size-heading-sm));
+    }
+
+    .button {
+        display: inline flex;
+        cursor: pointer;
+        font-family: var(--ff-heading);
+        font-weight: 700;
+        font-size: var(--font-size-md);
+        text-decoration: none;
+        background-color: var(--background-accent-main);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius-1);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+        background: var(--background-accent-light);
+        color: var(--text-high-contrast);
+    }
 }
 
 @layer utilities {
+    .text-center {
+        text-align: center;
+    }
 
-    /*screen reader only*/
+    .text-brand {
+        color: var(--text-brand);
+    }
+
+    .text-high-contrast {
+        color: var(--text-high-contrast);
+    }
+
+    .section-title {
+        font-size: var(--font-size-heading-regular);
+    }
+
+    .background-base {
+        background-color: var(--background-base);
+    }
+
+    .background-light {
+        background-color: var(--background-light);
+    }
+
+    .background-extra-light {
+        background-color: var(--background-extra-light);
+    }
+
+    .background-dark {
+        background-color: var(--background-dark);
+    }
+
+    .background-extra-dark {
+        background-color: var(--background-extra-dark);
+    }
+
+    .background-accent {
+        background-color: var(--background-accent-dark);
+    }
+
+    .font-size-sm {
+        font-size: var(--font-size-sm);
+    }
+
+    .font-size-regular {
+        font-size: var(--font-size-regular);
+    }
+
+    .font-size-md {
+        font-size: var(--font-size-md);
+    }
+
+    .font-size-lg {
+        font-size: var(--font-size-lg);
+    }
+
     .visually-hidden {
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
