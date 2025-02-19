@@ -250,6 +250,24 @@
 }
 
 @layer components {
+
+    .skip-to-main:not(:focus) {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    .skip-to-main {
+        position: absolute;
+        background: var(--background-accent-main);
+        padding: 1rem;
+        border-radius: var(--border-radius-2);
+    }
+
     .site-header {
         padding-block: 1rem;
     }
@@ -273,6 +291,56 @@
 
         a {
             text-decoration: none;
+        }
+    }
+
+    [aria-controls="primary-navigation"] {
+        display: none;
+    }
+
+    @media (width < 760px) {
+        [aria-controls="primary-navigation"] {
+            display: block;
+            z-index: 100;
+            background: transparent;
+            border: 0;
+
+            img {
+                border-radius: 0;
+            }
+        }
+
+        .site-header {
+            position: relative;
+        }
+
+        .primary-navigation {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            right: 0;
+            padding: 2rem;
+            border-radius: 0 0 0 var(--border-radius-3);
+            background: var(--background-accent-main);
+
+            ul {
+                flex-direction: column;
+                gap: 0;
+                font-size: var(--fs-700);
+                font-family: var(--ff-heading);
+                font-weight: 700;
+            }
+
+            li+li {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 2px solid var(--background-accent-light);
+            }
+        }
+
+        [aria-expanded="true"]~.primary-navigation {
+            display: block;
         }
     }
 
@@ -322,7 +390,7 @@
 
     .card {
         display: grid;
-        gap: var(--card-gap, 1rem);
+        gap: 1rem;
         padding: 1rem;
         background-color: var(--background-light);
         border-radius: var(--border-radius-3);

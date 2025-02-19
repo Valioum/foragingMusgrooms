@@ -11,27 +11,32 @@
         href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&family=Outfit:wght@100..900&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
 </head>
 
 <body>
+    <a href="@main" class="skip-to-main">Skip to main content</a>
     <header class="site-header">
         <div class="wrapper" data-type="wide">
             <div class="site-header__inner">
                 <a href="/">
                     <img class="logo" src="/assets/fungi-finders.svg" />
                 </a>
-
+                <button aria-controls="primary-navigation" aria-expanded="false">
+                    <span class="visually-hidden">Menu</span>
+                    <img src="/assets/hamburger.svg" alt="" />
+                </button>
                 <nav class="primary-navigation">
                     <ul>
-                        <li><a href="#">Discover</a></li>
-                        <li><a href="#">Mushroom guide</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="/">Discover</a></li>
+                        <li><a href="mushroom-guide.html">Mushroom guide</a></li>
+                        <li><a href="mushroom-guide.html#faq">FAQ</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
-    <main>
+    <main id="main">
         <section class="hero section flow" data-padding="compact">
             <div class="wrapper">
                 <h1 class="hero__title">
@@ -74,10 +79,10 @@
 
                 <!-- this is 3 columns-->
                 <div class="equal-columns">
-                    <div class="card">
+                    <div class="card grid-flow">
                         <img src="/assets/outdoor-exploration.webp"
                             alt="Tighly grouped brown mushrooms growing up the side of a mossy tree trunk" />
-                        <h3 class="card__title">Outdoor Exploration</h3>
+                        <h3>Outdoor Exploration</h3>
                         <p>
                             Mushroom foraging takes you off the beaten path and into the
                             heart of nature. Learn to read the landscape, identifying prime
@@ -87,9 +92,9 @@
                         </p>
                     </div>
 
-                    <div class="card">
+                    <div class="card grid-flow">
                         <img src="/assets/botanical-expertise.webp" alt="Various harvested wild mushrooms on a table" />
-                        <h3 class="card__title">Botanical Expertise</h3>
+                        <h3>Botanical Expertise</h3>
                         <p>
                             Dive into the intricate world of fungal biology. Discover the
                             unique structures of mushrooms, from caps to gills to spores.
@@ -100,10 +105,10 @@
                         </p>
                     </div>
 
-                    <div class="card">
+                    <div class="card grid-flow">
                         <img src="/assets/culinary-delight.webp"
                             alt="A freshly cooked plate of food, still steaming, with several mushroom slices on it" />
-                        <h3 class="card__title">Culinary Delights</h3>
+                        <h3>Culinary Delights</h3>
                         <p>
                             Transform your foraged finds into delectable dishes. Many edible
                             mushrooms offer unique flavors and textures that can elevate
