@@ -1,32 +1,66 @@
-const cards = document.querySelectorAll('.mushroom-guide .card');
+const cards = document.querySelectorAll(".mushroom-guide .card");
+const seasonalFilter = document.querySelector("#season");
+const edibleFilter = document.querySelector("#edible");
 
-const seasonFilter = document.querySelector('#season');
-const edibleFilter = document.querySelector('#edible');
+const noResultsMessage = document.querySelector(".no-results-message");
 
-const currentFilter = {
-    season: 'all',
-    edible: 'all'
-}; // default filter when the page loads
+const currentFilters = {
+    season: "all",
+    edible: "all",
+};
 
-seasonFilter.addEventListener('change', updateFilter);
-edibleFilter.addEventListener('change', updateFilter);
+cards.forEach((card, index) => {
+    // You can use a data attribute if cards have unique IDs
+    const mushroomId = `mushroom-${index + 1}`;
+    card.style.viewTransitionName = `mushroom-card-${mushroomId}`;
+});
+
+seasonalFilter.addEventListener("change", updateFilter);
+edibleFilter.addEventListener("change", updateFilter);
 
 function updateFilter(e) {
     const filterType = e.target.name;
-    currentFilter[filterType] = e.target.value;
 
-    console.log(currentFilter);
-} // logs the current filter when a filter is changed
+    currentFilters[filterType] = e.target.value;
+
+    if (!document.startViewTransition) {
+        filterCards();
+        return;
+    }
+    document.startViewTransition(() => filterCards());
+}
 
 function filterCards() {
-    cards.forEach(card => {
-        const season = card.getAttribute('data-season');
-        const edible = card.getAttribute('data-edible');
+    let hasVisibleCards = false;
 
-        if ((currentFilter.season === 'all' || currentFilter.season === season) && (currentFilter.edible === 'all' || currentFilter.edible === edible)) {
-            card.style.display = 'block';
+    cards.forEach((card) => {
+        const season = card.querySelector("[data-season]").dataset.season;
+        const edible = card.querySelector("[data-edible]").dataset.edible;
+
+        const matchesSeason = currentFilters.season === season;
+
+        const matchesEdible = currentFilters.edible === edible;
+
+        if (
+            (currentFilters.season === "all" || currentFilters.season === season) &&
+            (currentFilters.edible === "all" || currentFilters.edible === edible)
+        ) {
+            card.hidden = false;
+            hasVisibleCards = true;
         } else {
-            card.style.display = 'none';
+            card.hidden = true;
         }
     });
+    if (hasVisibleCards) {
+        noResultsMessage.hidden = true;
+    } else {
+        noResultsMessage.hidden = false;
+    }
 }
+
+function enableFiltering() {
+    seasonalFilter.hidden = false;
+    edibleFilter.hidden = false;
+}
+
+enableFiltering();
