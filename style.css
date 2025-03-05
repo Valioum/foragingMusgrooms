@@ -150,6 +150,19 @@
 }
 
 @layer base {
+    html {
+        font-family: var(--ff-body);
+        line-height: 1.6;
+        scroll-padding: 3rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+
+
     body {
         font-family: var(--ff-body);
         font-size: var(--font-size-regular);
@@ -181,6 +194,13 @@
 }
 
 @layer layout {
+
+    .flex-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
     .flow>*+* {
         margin-block-start: var(--flow-space, 1em);
     }
@@ -223,6 +243,13 @@
                 padding-block: 4.5rem;
             }
         }
+    }
+
+    .grid-auto-fit {
+        --auto-fit-min-col-size: 250px;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(var(--auto-fit-min-col-size), 100%), 1fr));
     }
 
     .equal-columns {
@@ -320,106 +347,230 @@
         }
     }
 
-    .card {
-        display: grid;
-        gap: var(--card-gap, 1rem);
-        padding: 1rem;
-        background-color: var(--background-light);
-        border-radius: var(--border-radius-3);
+    .mushroom-guide {
+        --card-title-font-size: var(--font-size-lg);
+        --card-title-color: var(--text-high-contrast);
+        --card-gap: 0.75rem;
+    }
 
-        img {
+    .faq-bento {
+        --card-title-color: --text-high-contrast;
+        display: grid;
+        gap: 1rem;
+        grid-template-areas:
+            "card-one"
+            "card-two"
+            "card-three"
+            "card-four";
+
+        @media (width > 600px) {
+            grid-template-areas:
+                "card-one  card-two"
+                "card-three  card-four";
+
+        }
+
+        @media (width > 900px) {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-areas:
+                "card-one  card-two  card-four"
+                "card-three  card-three  card-four";
+        }
+
+        .card>img {
+            /* fill the cell with the img and crop it with the object-fit starting from center*/
+            height: 100%;
+            object-fit: cover;
+
+            @media (width > 600px) {
+                .card:nth-child(even)>img {
+                    order: 3;
+                }
+            }
+
+            .card:nth-child(1) {
+                grid-area: card-one;
+            }
+
+            .card:nth-child(2) {
+                grid-area: card-two;
+            }
+
+            .card:nth-child(3) {
+                grid-area: card-three;
+
+                @media (width > 900px) {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+
+                    img {
+                        grid-column: 1 / 2;
+                        grid-row: 1 / 3;
+                    }
+                }
+            }
+
+            .card:nth-child(4) {
+                grid-area: card-four;
+            }
+        }
+
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--card-gap, 1rem);
+            padding: 1rem;
+            background-color: var(--background-light);
+            border-radius: var(--border-radius-3);
+
+            img {
+                border-radius: var(--border-radius-2);
+            }
+        }
+
+        .card__title {
+            color: var(--card-title-color, var(--text-brand));
+            font-size: var(--card-title-font-size, var(--font-size-heading-sm));
+        }
+
+        .card__note {
+            margin-block-start: auto;
+            background-color: var(--background-extra-light);
+            padding: 0.75rem;
             border-radius: var(--border-radius-2);
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+            li {
+                font-family: var(--ff-heading);
+                color: var(--text-high-contrast);
+                background-color: var(--tag-bg);
+                padding: 0rem 0.25rem;
+                border-radius: var(--border-radius-1);
+                font-size: var(--font-size-sm);
+            }
+
+            [data-edible="edible"] {
+                --tag-bg: var(--background-accent-main);
+            }
+
+            [data-edible="toxic"] {
+                --tag-bg: var(--clr-brand-500);
+            }
+
+            [data-season="summer"] {
+                --tag-bg: var(--background-accent-main);
+            }
+
+            [data-season="spring"] {
+                --tag-bg: var(--clr-teal-500);
+            }
+
+            [data-season="fall"] {
+                --tag-bg: var(--clr-orange-500);
+            }
+        }
+
+
+
+        .button {
+            display: inline flex;
+            cursor: pointer;
+            font-family: var(--ff-heading);
+            font-weight: 700;
+            font-size: var(--font-size-md);
+            text-decoration: none;
+            background-color: var(--background-accent-main);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-1);
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            background: var(--background-accent-light);
+            color: var(--text-high-contrast);
+
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            background-color: var(--background-accent-main);
+            border: 0;
+            border-radius: var(--border-radius-2);
+            color: var(--text-high-contrast);
         }
     }
 
-    .card__title {
-        color: var(--card-title-color, var(--text-brand));
-        font-size: var(--card-title-font-size, var(--font-size-heading-sm));
-    }
+    @layer utilities {
+        .text-center {
+            text-align: center;
+        }
 
-    .button {
-        display: inline flex;
-        cursor: pointer;
-        font-family: var(--ff-heading);
-        font-weight: 700;
-        font-size: var(--font-size-md);
-        text-decoration: none;
-        background-color: var(--background-accent-main);
-        padding: 0.5rem 1rem;
-        border-radius: var(--border-radius-1);
-    }
+        .text-brand {
+            color: var(--text-brand);
+        }
 
-    .button:hover,
-    .button:focus-visible {
-        background: var(--background-accent-light);
-        color: var(--text-high-contrast);
-    }
-}
+        .text-high-contrast {
+            color: var(--text-high-contrast);
+        }
 
-@layer utilities {
-    .text-center {
-        text-align: center;
-    }
+        .section-title {
+            font-size: var(--font-size-heading-regular);
+        }
 
-    .text-brand {
-        color: var(--text-brand);
-    }
+        .background-base {
+            background-color: var(--background-base);
+        }
 
-    .text-high-contrast {
-        color: var(--text-high-contrast);
-    }
+        .background-light {
+            background-color: var(--background-light);
+        }
 
-    .section-title {
-        font-size: var(--font-size-heading-regular);
-    }
+        .background-extra-light {
+            background-color: var(--background-extra-light);
+        }
 
-    .background-base {
-        background-color: var(--background-base);
-    }
+        .background-dark {
+            background-color: var(--background-dark);
+        }
 
-    .background-light {
-        background-color: var(--background-light);
-    }
+        .background-extra-dark {
+            background-color: var(--background-extra-dark);
+        }
 
-    .background-extra-light {
-        background-color: var(--background-extra-light);
-    }
+        .background-accent {
+            background-color: var(--background-accent-dark);
+        }
 
-    .background-dark {
-        background-color: var(--background-dark);
-    }
+        .font-size-sm {
+            font-size: var(--font-size-sm);
+        }
 
-    .background-extra-dark {
-        background-color: var(--background-extra-dark);
-    }
+        .font-size-regular {
+            font-size: var(--font-size-regular);
+        }
 
-    .background-accent {
-        background-color: var(--background-accent-dark);
-    }
+        .font-size-md {
+            font-size: var(--font-size-md);
+        }
 
-    .font-size-sm {
-        font-size: var(--font-size-sm);
-    }
+        .font-size-lg {
+            font-size: var(--font-size-lg);
+        }
 
-    .font-size-regular {
-        font-size: var(--font-size-regular);
-    }
-
-    .font-size-md {
-        font-size: var(--font-size-md);
-    }
-
-    .font-size-lg {
-        font-size: var(--font-size-lg);
-    }
-
-    .visually-hidden {
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;
+        .visually-hidden {
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            height: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
     }
 }
